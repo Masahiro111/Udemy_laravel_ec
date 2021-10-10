@@ -1,3 +1,9 @@
+@props([
+'title' => 'タイトルの初期値です',
+'content'=>'初期値です',
+'message' => '本文初期値です'
+])
+
 <div class="border-2 shadow-md w-1.4 p-2">
     <div>title: {{ $title }}</div>
     <div>画像</div>

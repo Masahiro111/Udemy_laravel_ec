@@ -10,9 +10,13 @@
         <x-slot name="title">
             タイトル(=ﾟωﾟ)ﾉ
         </x-slot>
-        <x-slot name="content">
+        <x-slot name="message">
             コンテンツ(;´･ω･)
         </x-slot>
+    </x-tests.card>
+
+    <x-tests.card>
+        <x-slot name="title">タイトル２</x-slot>
     </x-tests.card>
 
 </x-tests.app>
