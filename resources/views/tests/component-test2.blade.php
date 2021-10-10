@@ -1,1 +1,3 @@
-test2
+<x-tests.app>
+    ここに入力２
+</x-tests.app>
