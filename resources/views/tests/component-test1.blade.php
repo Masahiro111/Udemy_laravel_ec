@@ -19,4 +19,8 @@
         <x-slot name="title">タイトル２</x-slot>
     </x-tests.card>
 
+    <x-tests.card class="bg-red-300">
+        <x-slot name="title">CSSを変更したい</x-slot>
+    </x-tests.card>
+
 </x-tests.app>
