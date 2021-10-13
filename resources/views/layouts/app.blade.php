@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,9 +17,16 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
+
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            @if(auth('admin')->user())
+            @include('layouts.admin-navigation')
+            @elseif(auth('owners')->user())
+            @include('layouts.owner-navigation')
+            @elseif(auth('users')->user())
+            @include('layouts.user-navigation')
+            @endif
 
             <!-- Page Heading -->
             <header class="bg-white shadow">
@@ -33,4 +41,5 @@
             </main>
         </div>
     </body>
+
 </html>
