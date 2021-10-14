@@ -26,8 +26,10 @@ Route::get('/', function () {
     return view('admin.welcome');
 });
 
+//  Resource
 Route::resource('owners', OwnersController::class)
     ->middleware(['auth:admin']);
+
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
