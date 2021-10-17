@@ -31,7 +31,7 @@
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">name</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">mail</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">date</th>
-                                            <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,8 +41,11 @@
                                             <td class="px-4 py-3"> {{ $owner->name }} </td>
                                             <td class="px-4 py-3"> {{ $owner->email }} </td>
                                             <td class="px-4 py-3"> {{ $owner->created_at->diffForHumans() }}</td>
-                                            <td class="w-10 text-center">
-                                                <input name="plan" type="radio">
+                                            <td class="px-4 py-3 text-right">
+                                                {{-- <input name="plan" type="radio"> --}}
+                                                <a href="{{ route('admin.owners.edit', ['owner' => $owner->id ]) }}" class="text-white text-sm bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded">
+                                                    更新する
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
