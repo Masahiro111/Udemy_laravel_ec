@@ -64,6 +64,7 @@
 
                                     </tbody>
                                 </table>
+                                {{ $owners->link() }}
                             </div>
                         </div>
                     </section>
