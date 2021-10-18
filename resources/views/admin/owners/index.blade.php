@@ -18,7 +18,7 @@
                     <section class="text-gray-600 body-font">
                         <div class="container px-5 mx-auto">
 
-                            <x-flash-message status="info" />
+                            <x-flash-message status="session('status')" />
 
                             <div class="flex justify-end mb-4">
                                 <a href="{{ route('admin.owners.create') }}" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録</a>
@@ -32,6 +32,8 @@
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">mail</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">date</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
+                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,9 +46,19 @@
                                             <td class="px-4 py-3 text-right">
                                                 {{-- <input name="plan" type="radio"> --}}
                                                 <a href="{{ route('admin.owners.edit', ['owner' => $owner->id ]) }}" class="text-white text-sm bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded">
-                                                    更新する
+                                                    更新
                                                 </a>
                                             </td>
+                                            <form id="delete_{{$owner->id}}" method="POST" action="{{ route('admin.owners.destroy',['owner' => $owner->id ]) }}">
+                                                @csrf
+                                                @method('delete')
+                                                <td class="px-4 py-3 text-right">
+                                                    {{-- <input name="plan" type="radio"> --}}
+                                                    <a data-id="{{ $owner->id }}" onclick="deletePost(this)" href="#" class="text-white text-sm bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded">
+                                                        削除
+                                                    </a>
+                                                </td>
+                                            </form>
                                         </tr>
                                         @endforeach
 
@@ -70,4 +82,12 @@
             </div>
         </div>
     </div>
+    <script>
+        function deletePost(e){
+            'use strict';
+            if (confirm('id ' + e.dataset.id +' を本当に削除して良いですか？')){
+                document.getElementById('delete_' + e.dataset.id).submit();
+            }
+        }
+    </script>
 </x-app-layout>
