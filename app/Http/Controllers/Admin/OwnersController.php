@@ -149,12 +149,15 @@ class OwnersController extends Controller
 
     public function expiredOwnerIndex()
     {
+        // onlyTrashed() : ソフトデリーとされたレコードだけを取得する
         $expiredOwners = Owner::onlyTrashed()->get();
+
         return view('admin.expired-owners', compact('expiredOwners'));
     }
 
     public function expiredOwnerDestroy($id)
     {
+        // forceDelete() : ソフトデリートされたレコードを完全に削除する
         Owner::onlyTrashed()->findOrFail($id)->forceDelete();
 
         return redirect()->route('admin.expired-owners.index');
