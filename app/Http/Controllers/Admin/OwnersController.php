@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Owner;
+use App\Models\Shop;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class OwnersController extends Controller
 {
@@ -39,7 +42,7 @@ class OwnersController extends Controller
         // ]);
 
         // dd($e_all, $q_get, $q_first, $c_test);
-        $owners = Owner::select('name', 'email', 'created_at')->get();
+        $owners = Owner::select('id', 'name', 'email', 'created_at')->paginate(3);
 
         return view('admin.owners.index', compact('owners'));
     }
@@ -69,15 +72,33 @@ class OwnersController extends Controller
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            DB::transaction(function () use ($request) {
+                $owner = Owner::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                Shop::create([
+                    'owner_id' => $owner->id,
+                    'name' => '店名を入力してください。',
+                    'information' => '',
+                    'filename' => '',
+                    'is_selling' => true,
+                ]);
+            }, 2);
+        } catch (Throwable $e) {
+            Log::error($e);
+            throw $e;
+        }
 
         return redirect()
             ->route('admin.owners.index')
-            ->with('message', 'オーナー登録を実施しました。');
+            ->with([
+                'message' => 'オーナー登録を実施しました。',
+                'status' => 'info',
+            ]);
     }
 
     /**
@@ -99,7 +120,8 @@ class OwnersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        return view('admin.owners.edit', compact('owner'));
     }
 
     /**
@@ -111,7 +133,18 @@ class OwnersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Owner::findOrFail($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()
+            ->route('admin.owners.index')
+            ->with([
+                'message' => 'オーナー情報を更新しました。',
+                'status' => 'info',
+            ]);
     }
 
     /**
@@ -122,6 +155,29 @@ class OwnersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Owner::findOrFail($id)->delete(); // Soft Delete
+
+        return redirect()
+            ->route('admin.owners.index')
+            ->with([
+                'message' => 'オーナー情報を削除しました',
+                'status' => 'alert',
+            ]);
+    }
+
+    public function expiredOwnerIndex()
+    {
+        // onlyTrashed() : ソフトデリーとされたレコードだけを取得する
+        $expiredOwners = Owner::onlyTrashed()->get();
+
+        return view('admin.expired-owners', compact('expiredOwners'));
+    }
+
+    public function expiredOwnerDestroy($id)
+    {
+        // forceDelete() : ソフトデリートされたレコードを完全に削除する
+        Owner::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        return redirect()->route('admin.expired-owners.index');
     }
 }
