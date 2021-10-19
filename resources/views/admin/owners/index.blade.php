@@ -64,7 +64,7 @@
 
                                     </tbody>
                                 </table>
-                                {{ $owners->link() }}
+                                {{ $owners->links() }}
                             </div>
                         </div>
                     </section>

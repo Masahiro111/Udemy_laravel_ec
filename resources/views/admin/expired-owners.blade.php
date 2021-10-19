@@ -33,7 +33,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach($ExpiredOwners as $owner)
+                                        @foreach($expiredOwners as $owner)
                                         <tr>
                                             <td class="px-4 py-3"> {{ $owner->name }} </td>
                                             <td class="px-4 py-3"> {{ $owner->email }} </td>
