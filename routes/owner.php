@@ -37,7 +37,7 @@ Route::prefix('shops')
 
 //  Resource
 Route::resource('images', ImageController::class)
-    ->middleware(['auth:admin']);
+    ->middleware(['auth:owners']);
 
 
 
