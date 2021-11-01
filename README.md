@@ -1,4 +1,4 @@
-## udemy Laravel 口座
+## udemy Laravel 講座
 
 ## インストール方法
 
