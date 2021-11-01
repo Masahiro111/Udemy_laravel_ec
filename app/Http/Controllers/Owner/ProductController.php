@@ -38,8 +38,17 @@ class ProductController extends Controller
     public function index()
     {
         // dd(Auth::id());
-        $products = Owner::findOrFail(Auth::id())->shop->product;
-        return view('owner.products.index', compact('products'));
+        // $products = Owner::findOrFail(Auth::id())->shop->product;
+        $ownerInfo = Owner::with('shop.product.imageFirst')
+            ->where('id', Auth::id())->get();
+
+        // foreach ($ownerInfo as $owner) {
+        //     foreach($owner->shop->product as $product){
+
+        //     }
+        // }
+
+        return view('owner.products.index', compact('ownerInfo'));
     }
 
     /**
