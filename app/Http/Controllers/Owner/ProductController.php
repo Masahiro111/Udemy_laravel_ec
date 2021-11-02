@@ -42,12 +42,6 @@ class ProductController extends Controller
         $ownerInfo = Owner::with('shop.product.imageFirst')
             ->where('id', Auth::id())->get();
 
-        // foreach ($ownerInfo as $owner) {
-        //     foreach($owner->shop->product as $product){
-
-        //     }
-        // }
-
         return view('owner.products.index', compact('ownerInfo'));
     }
 
