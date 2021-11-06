@@ -19,7 +19,13 @@ if($name === 'image4'){ $modal = 'modal-4'; }
                     @foreach ($images as $image)
                     <div class="w-1/4 p-2 md:p-4">
                         <div class="border rounded-md p-2 md:p-4">
-                            <img src="{{ asset('storage/products/' . $image->filename) }}" alt="">
+                            <img
+                                 class="image"
+                                 data-id="{{ $name }}_{{ $image->id }}"
+                                 data-file="{{ $image->filename }}"
+                                 data-path="{{ asset('storage/products/') }}"
+                                 data-modal="{{ $modal }}"
+                                 src="{{ asset('storage/products/' . $image->filename) }}" alt="">
 
                             <div class="text-xs text-gray-500">
                                 {{ $image->title }}
@@ -36,5 +42,12 @@ if($name === 'image4'){ $modal = 'modal-4'; }
     </div>
 </div>
 
-<a data-micromodal-trigger="{{ $modal }}" href='javascript:;'>ファイルを選択
-</a>
+
+<div class="flex justify-around items-center mb-4">
+    <a data-micromodal-trigger="{{ $modal }}" href='javascript:;'>ファイルを選択
+    </a>
+    <div class="w-1/4">
+        <img src="" id="{{ $name }}_thumbnail" alt="">
+    </div>
+</div>
+<input type="hidden" id="{{ $name }}_hidden" name="{{ $name }}" value="">
